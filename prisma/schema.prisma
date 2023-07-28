@@ -11,8 +11,63 @@ datasource db {
 }
 
 model Wheel {
-  id        String @id @default(uuid())
-  title     String
+  id             String          @id @default(uuid())
+  title          String
+  description    String?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  deletedAt      DateTime?
+  enabled        Boolean         @default(true)
+  WheelSetting   WheelSetting[]
+  WheelPrizes    WheelPrize[]
+  WheelPrizesWon WheelPrizeWon[]
+}
+
+model WheelSetting {
+  id              String   @id @default(uuid())
+  wheel           Wheel    @relation(fields: [wheelId], references: [id], onDelete: Cascade)
+  wheelId         String
+  spinLimitPerDay Int
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model WheelPrize {
+  id            String          @id @default(uuid())
+  wheel         Wheel           @relation(fields: [wheelId], references: [id], onDelete: Cascade)
+  wheelId       String
+  title         String
+  image         String
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  chancePercent Float
+  WheelPrizeWon WheelPrizeWon[]
+}
+
+model WheelPrizeWon {
+  id              String     @id @default(uuid())
+  userId          Int
+  Wheel           Wheel      @relation(fields: [wheelId], references: [id])
+  wheelId         String
+  WheelPrize      WheelPrize @relation(fields: [wheelPrizeId], references: [id])
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  wheelPrizeId    String
+  wheelTicketUsed Int?
+}
+
+model UserWheelTicket {
+  id        String   @id @default(uuid())
+  userId    Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  value     Int
+}
+
+model UserPayment {
+  id              String   @id @default(uuid())
+  userId          Int
+  paymentAt       DateTime @default(now())
+  amount          Float
+  qtyWheelTickets Int
 }

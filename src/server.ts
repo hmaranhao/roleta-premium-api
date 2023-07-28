@@ -1,12 +1,15 @@
 import fastify from 'fastify'
-import { PrismaClient } from '@prisma/client'
+import cors from '@fastify/cors'
+import { wheelRoutes } from './routes/wheel'
 
 const app = fastify()
-const prisma = new PrismaClient()
+
+app.register(cors, { origin: true })
+
+app.register(wheelRoutes)
 
 app.get('/', async (request, reply) => {
-  const wheels = await prisma.wheel.findMany()
-  return { wheels }
+  return 'Wheel API'
 })
 
 app

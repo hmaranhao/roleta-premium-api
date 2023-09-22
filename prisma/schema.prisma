@@ -37,7 +37,7 @@ model WheelPrize {
   wheel         Wheel           @relation(fields: [wheelId], references: [id], onDelete: Cascade)
   wheelId       String
   title         String
-  image         String
+  image         String?
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
   chancePercent Float

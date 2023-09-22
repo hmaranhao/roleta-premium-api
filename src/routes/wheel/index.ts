@@ -9,6 +9,9 @@ export async function wheelRoutes(app: FastifyInstance) {
       orderBy: {
         createdAt: 'desc',
       },
+      include: {
+        WheelPrizes: true,
+      },
     })
     return { wheels }
   })
